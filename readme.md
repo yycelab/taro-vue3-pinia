@@ -6,6 +6,7 @@
 + 开发工具:自己下载微信开发者工具
 
 ```text
+ pnpm install
  project.config.json >> appid配置
  pnpm dev:weapp让程序跑起来
  微信开发者工具打开目录.
