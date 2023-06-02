@@ -5,6 +5,7 @@ import UserIndex from "@/pages/components/user/index.vue"
 import HomeIndex from "@/pages/components/home/index.vue"
 import WelcomeIndex from "@/pages/components/index/index.vue"
 import LayoutTabBar from "@/components/layout/tab-bar/index.vue"
+// import WebView from "@/pages/components/webview/index.vue"
 
 import { useAppStore, TabHome, TabUser } from "@/stores/index"
 
@@ -14,12 +15,16 @@ import { useAppStore, TabHome, TabUser } from "@/stores/index"
 const routes = [
     {
         path: '/',
-        alias:["/index"],
+        alias: ["/index"],
         component: WelcomeIndex,
     },
+    // {
+    //     path: '/webview',
+    //     component: WebView,
+    // },
     {
         path: "/tab",
-        redirect:'/tab/user',
+        redirect: '/tab/user',
         component: LayoutTabBar,
         children: [
             {

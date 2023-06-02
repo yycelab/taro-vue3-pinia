@@ -3,7 +3,7 @@ module.exports = {
     NODE_ENV: '"production"'
   },
   defineConstants: {
-    API_URL:JSON.stringify("http://www.youku.com/")
+    API_URL:JSON.stringify("http://www.bing.com/")
   },
   mini: {
     enableSourceMap:false

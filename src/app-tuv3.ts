@@ -53,7 +53,7 @@ import {
     // AtIndexes,
     // AtCalendar,
     // AtVirtualScroll,
-    // AtSkeleton,
+    AtSkeleton,
 } from 'taro-ui-vue3'
 
 export function install(app: App<Element>) {
@@ -106,7 +106,7 @@ export function install(app: App<Element>) {
         // AtIndexes,
         // AtCalendar,
         // AtVirtualScroll,
-        // AtSkeleton,
+        AtSkeleton,
     }))
 }
 
@@ -152,4 +152,4 @@ import "taro-ui-vue3/dist/style/components/tab-bar.scss"
 // import "taro-ui-vue3/dist/style/components/indexes.scss"
 // import "taro-ui-vue3/dist/style/components/calendar.scss"
 // import "taro-ui-vue3/dist/style/components/virtual-scroll.scss"
-// import "taro-ui-vue3/dist/style/components/skeleton.scss"
+import "taro-ui-vue3/dist/style/components/skeleton.scss"
