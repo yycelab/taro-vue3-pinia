@@ -6,7 +6,7 @@
         </at-noticebar>
         <view>
             <at-avatar size="large" circle :image="Image1"/>
-            <image class="image-item" :src="Image1"/>
+            <image class="image-item" :src="user_atavar"/>
         </view>
 </view>
 </template>
@@ -14,7 +14,7 @@
 // import { useDidShow, useDidHide, useLoad } from "@tarojs/taro"
 // import { onMounted, onUnmounted, onActivated } from "vue"
 // import { useAppStore, TabHome } from "@/stores/index"
-import Image1 from "@/assets/images/1.webp"
+import {user_atavar} from "@/assets/index"
 
 // const app = useAppStore()
 const api = API_URL
