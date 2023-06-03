@@ -38,20 +38,36 @@ export const useAppStore = defineStore('app', {
         return {
             bottomNav: menuList,
             current: 0,
-            statusBarHeight: 44
+            statusBarHeight: 44,
+            _vrRedirect: ''
         }
     },
     getters: {
-        tabTitle(state):string{
+        tabTitle(state): string {
             return menuList[state.current].title
+        },
+        hasRedirect(state): boolean {
+            return (state._vrRedirect ?? '').length > 0
         }
     },
     actions: {
         initStatusBarHeight(num: number) {
             this.statusBarHeight = num
         },
-        routerTo({ path, extern = false, state = {}, action = "push" }: RouteToOptions) {
+        redirectTo() {
+            const _vrRedirect = this._vrRedirect??''
+            console.log("[try-redirect-url] to:[", _vrRedirect, "]")
+            if (_vrRedirect.length > 0) {
+                this._vrRedirect = ''
+                this.routeTo({ path: _vrRedirect, action: 'replace' })
+            }
+        },
+        routeTo({ path, extern = false, state = {}, action = "push", redirect = '' }: RouteToOptions) {
+            console.log("[routeTo] path:",path,"; extern:",extern,"; redirect:",redirect)
             if (extern) {
+                if (redirect.length > 0) {
+                    this._vrRedirect = redirect
+                }
                 if (action === 'push') {
                     tryNavigateTo(path)
                 } else {
@@ -60,24 +76,26 @@ export const useAppStore = defineStore('app', {
                 return
             }
             const { router }: AppState = this
-            const options = { path: path };
             if (action === 'push') {
-                router!.push(options)
+                router!.push(path)
             } else {
-                router!.replace(options)
+                router!.replace(path)
             }
             history.replaceState({ ...history.state, ...state }, '', path)
         },
-
-        switchBottomNav({ index = -1, path = '' }: { index?: number, path?: string }) {
+        switchBottomNav({ index = -1, path = '', triggerTab = true }: { index?: number, path?: string, triggerTab?: boolean }) {
             if (index !== -1 || path.length > 0) {
                 if (path.length > 0) {
                     index = menuList.findIndex(it => it.to === path)
                 }
                 if (this.current !== index && index >= 0 && index <= menuList.length) {
                     this.current = index
+                    if (!triggerTab) {
+                        console.log("just chenge the current index:",this.current)
+                        return
+                    }
                     const url = menuList[index].to
-                    this.routerTo({ path: url })
+                    this.routeTo({ path: url })
                 }
             }
         }

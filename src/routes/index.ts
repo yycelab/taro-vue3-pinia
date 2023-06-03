@@ -17,6 +17,9 @@ const routes = [
         path: '/',
         alias: ["/index"],
         component: WelcomeIndex,
+        beforeEnter: (to, from) => {
+            console.log("[router-index] enter the welcome page")
+        }
     },
     // {
     //     path: '/webview',
@@ -52,8 +55,10 @@ export function setupRouter(app: App<Element>): Router {
     const tabs = [TabHome, TabUser]
     router.beforeEach(async (to, from) => {
         const store = useAppStore()
+        // console.log('[router-global] try intercept....')
         if (tabs.find(it => it === to.path)) {
-            store.switchBottomNav({ path: to.path })
+            console.log('router guard.....', to.path ,JSON.stringify(to.query))
+            store.switchBottomNav({ path: to.path, triggerTab: false })
         }
     })
     app.use(router)

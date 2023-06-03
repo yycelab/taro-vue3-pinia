@@ -1,18 +1,28 @@
 <template>
-    <router-view></router-view>
+    <at-skeleton type="card" :loading="loading">
+        <router-view></router-view>
+        <handler :redirect="true" to="/" @on-redirect="handleRedirect" />
+    </at-skeleton>
 </template>
   
 <script setup lang="ts">
 import './index.scss'
-import { useAppStore } from "@/stores/index"
+// import { useAppStore } from "@/stores/index"
 // import TopNav from "@/components/top-nav/index.vue"
 // import BottomNav from "@/components/bottom-nav/index.vue"
 import { useDidShow } from "@tarojs/taro"
+import Handler from "@/components/handler/index.vue"
+import { ref } from "vue"
 
-const app = useAppStore()
+const loading = ref(true)
+
+// const app = useAppStore()
+function handleRedirect() {
+    loading.value = true
+}
 
 useDidShow(() => {
-    app.routerTo({path:"/"})
+    loading.value = false
 })
 
 

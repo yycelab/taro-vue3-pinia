@@ -1,12 +1,18 @@
 <template>
-    this is user center
+    <view>
+        this is user center
+        <at-noticebar>
+            ID: {{ id }} Name:{{ name }}
+        </at-noticebar>
+    </view>
 </template>
-<script setup>
-import { useDidShow, useDidHide, useLoad } from "@tarojs/taro"
-import { onMounted, onUnmounted, onActivated } from "vue"
-import { useAppStore, TabUser } from "@/stores/index"
+<script setup lang = "ts">
+import { useDidShow, useDidHide } from "@tarojs/taro"
+import { onMounted, onActivated, ref } from "vue"
+import { useRoute, } from "vue-router"
+// import { useAppStore } from "@/stores/index"
 
-const app = useAppStore()
+// const app = useAppStore()
 // onActivated(() => {
 //     app.switchBottomNav({ path: TabUser })
 // })
@@ -16,13 +22,27 @@ useDidHide(() => {
 useDidShow(() => {
     console.log("page show")
 })
-useLoad((p) => {
-    console.log("page load ,can load data")
-})
+
+const route = useRoute()
+const id = ref("0")
+const name = ref("未知用户")
+// const router = useRouter()
+function initParams() {
+    console.log("[index-user] location:",window.location.href)
+    const query = route.query
+    if (query.id) {
+        id.value = query.id as string
+    }
+    if (query.name) {
+        name.value = query.name as string
+    }
+}
+
 onMounted(() => {
-    console.log("components mounted ")
+    initParams()
 })
-onUnmounted(() => {
-    console.log("components unmounted ")
+onActivated(() => {
+    initParams()
 })
+
 </script>

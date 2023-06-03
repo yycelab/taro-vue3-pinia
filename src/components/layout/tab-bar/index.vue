@@ -1,6 +1,6 @@
 <template>
     <view>
-        <top-nav :title="app.tabTitle" back="/pages/index/index" />
+        <top-nav :title="app.tabTitle" :go-back="handleGoback" />
         <router-view></router-view>
         <bottom-nav />
     </view>
@@ -10,12 +10,21 @@
 import { useAppStore } from "@/stores/index"
 import TopNav from "@/components/top-nav/index.vue"
 import BottomNav from "@/components/bottom-nav/index.vue"
-import { useDidShow } from "@tarojs/taro"
+import { onActivated, onBeforeMount } from "vue"
 
 const app = useAppStore()
 
-useDidShow(() => {
-    app.switchBottomNav({index:0})
+function handleGoback() {
+    app.routeTo({ path: "/" })
+}
+
+function init() {
+}
+onBeforeMount(() => {
+    init()
+})
+onActivated(() => {
+    init()
 })
 </script>
   

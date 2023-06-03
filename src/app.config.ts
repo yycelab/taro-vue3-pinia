@@ -3,6 +3,7 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/user/index',
     'pages/webview/index',
+    'pages/dispatcher/index',
   ],
   window: {
     backgroundTextStyle: 'light',
