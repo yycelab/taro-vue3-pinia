@@ -136,18 +136,23 @@ async function request<P, RS>(config: HttpConfig, action: Method, uri: string, d
     if (req) {
         httpResponse.data = req
     } else {
-        const res = await Taro.request({
-            url: url,
-            method: method,
-            header: headers,
-            data: params,
-            dataType: 'json'
-        })
-        httpResponse.data = res.data
-        if (res.statusCode !== 200) {
-            httpResponse.statusCode = res.statusCode
-            httpResponse.data = { code: -1, message: `http failed,statusCode:${res.statusCode}` }
-            console.log('[http] [error-status] ', res.statusCode, ',', res.errMsg)
+        try {
+            const res = await Taro.request({
+                url: url,
+                method: method,
+                header: headers,
+                data: params,
+                dataType: 'json'
+            })
+            httpResponse.data = res.data
+            if (res.statusCode !== 200) {
+                httpResponse.statusCode = res.statusCode
+                httpResponse.data = { code: -1, message: `http failed,statusCode:${res.statusCode}` }
+                console.log('[http] [error-status] ', res.statusCode, ',', res.errMsg)
+            }
+        } catch (e) {
+            httpResponse.statusCode = 400
+            httpResponse.data = { code: -1, message: `http failed ,err:${e.message}` }
         }
     }
 

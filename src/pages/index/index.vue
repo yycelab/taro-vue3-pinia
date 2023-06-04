@@ -1,8 +1,8 @@
 <template>
-    <at-skeleton type="card" :loading="loading">
+    <view>
         <router-view></router-view>
         <handler :redirect="true" to="/" @on-redirect="handleRedirect" />
-    </at-skeleton>
+    </view>
 </template>
   
 <script setup lang="ts">

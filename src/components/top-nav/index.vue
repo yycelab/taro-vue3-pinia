@@ -1,16 +1,19 @@
 <template>
-    <at-nav-bar :style="{ marginTop: `${app.statusBarHeight}px` }" @clickLeftIcon="handleGoback" :leftIconType="leftIcon"
-        color='#000' :title="title" :leftText='backTxt'>
-        <template v-if="custom">
-            <slot></slot>
-        </template>
-    </at-nav-bar>
+    <view>
+        <at-nav-bar id="nav-bar" :style="{ paddingTop: `${app.statusBarHeight}px`,zIndex:1100 }" @clickLeftIcon="handleGoback"
+            :leftIconType="leftIcon" color='#000' :title="title" :leftText='backTxt'>
+            <template v-if="custom">
+                <slot></slot>
+            </template>
+        </at-nav-bar>
+        <at-message :style="{ marginTop: `${app.messageTopSpace}px` }" />
+    </view>
 </template>
 <script setup lang="ts">
 
 import { useAppStore } from "@/stores/index"
-import Taro from "@tarojs/taro";
-import { computed } from "vue";
+import Taro, { nextTick, createSelectorQuery } from "@tarojs/taro";
+import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router"
 // import {useRouter} from "vue-router"
 // back 
@@ -49,10 +52,19 @@ async function handleGoback() {
     }
     app.routeTo({ path: backurl, extern: true, action: 'replace' })
 }
-
-// onMounted(() => {
-//     console.log("icon is ", leftIcon)
-// })
+onMounted(() => {
+    if (app.shouldInitMessageTop) {
+        console.log("should init message top spaces!")
+        nextTick(() => {
+            const query = createSelectorQuery()
+            query.select('#nav-bar').boundingClientRect((res) => {
+                if (res) {
+                    app.initMessageTop((res as any).height)
+                }
+            }).exec()
+        })
+    }
+})
 
 // onActivated(() => {
 //     console.log("icon is ", leftIcon)

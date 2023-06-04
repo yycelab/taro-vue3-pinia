@@ -39,7 +39,8 @@ export const useAppStore = defineStore('app', {
             bottomNav: menuList,
             current: 0,
             statusBarHeight: 44,
-            _vrRedirect: ''
+            _vrRedirect: '',
+            messageTopSpace: false
         }
     },
     getters: {
@@ -48,14 +49,27 @@ export const useAppStore = defineStore('app', {
         },
         hasRedirect(state): boolean {
             return (state._vrRedirect ?? '').length > 0
+        },
+        messageTop(state): number {
+            return state.messageTopSpace === false ? state.statusBarHeight : state.messageTopSpace
+        },
+        shouldInitMessageTop(state): boolean {
+            return state.messageTopSpace === false
         }
     },
     actions: {
         initStatusBarHeight(num: number) {
             this.statusBarHeight = num
         },
+        initMessageTop(num: number) {
+            if (num < this.statusBarHeight) {
+                this.messageTopSpace = num + this.statusBarHeight
+            } else {
+                this.messageTopSpace = num
+            }
+        },
         redirectTo() {
-            const _vrRedirect = this._vrRedirect??''
+            const _vrRedirect = this._vrRedirect ?? ''
             console.log("[try-redirect-url] to:[", _vrRedirect, "]")
             if (_vrRedirect.length > 0) {
                 this._vrRedirect = ''
@@ -63,7 +77,7 @@ export const useAppStore = defineStore('app', {
             }
         },
         routeTo({ path, extern = false, state = {}, action = "push", redirect = '' }: RouteToOptions) {
-            console.log("[routeTo] path:",path,"; extern:",extern,"; redirect:",redirect)
+            console.log("[routeTo] path:", path, "; extern:", extern, "; redirect:", redirect)
             if (extern) {
                 if (redirect.length > 0) {
                     this._vrRedirect = redirect
@@ -91,7 +105,7 @@ export const useAppStore = defineStore('app', {
                 if (this.current !== index && index >= 0 && index <= menuList.length) {
                     this.current = index
                     if (!triggerTab) {
-                        console.log("just chenge the current index:",this.current)
+                        console.log("just chenge the current index:", this.current)
                         return
                     }
                     const url = menuList[index].to

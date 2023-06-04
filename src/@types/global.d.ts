@@ -33,6 +33,7 @@ declare global {
         bottomNav: TabItem[]
         current: number
         statusBarHeight: number
+        messageTopSpace: number|false
         _vrRedirect:string
     }
 

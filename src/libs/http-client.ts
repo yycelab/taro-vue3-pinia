@@ -1,8 +1,16 @@
+import Taro from "@tarojs/taro";
 import { HttpConfig, R, httpGet, httpJson, httpPost, AfterResponseHook } from "./http";
 
-const interceptResponse: AfterResponseHook<any, R> = (ctx) => {
-    console.log("[interceptResponse] [logdata] statusCode:",ctx.response?.statusCode,", data:",JSON.stringify(ctx.response?.data))
-    return ctx.response?.data
+const interceptResponse: AfterResponseHook<any, R> = ({ response }) => {
+    console.log("[interceptResponse] [logdata] statusCode:", response?.statusCode, ", data:", JSON.stringify(response?.data))
+    if (response?.statusCode !== 200) {
+        Taro.atMessage({
+            message: '加载数据失败!',
+            type: 'warning',
+
+        })
+    }
+    return response?.data
 }
 const config: HttpConfig = { base: '', headers: {}, afterResponse: interceptResponse }
 
