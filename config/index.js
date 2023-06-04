@@ -36,6 +36,7 @@ const config = {
     '@/pages': path.resolve(__dirname, '..', 'src/pages'),
     '@/routes': path.resolve(__dirname, '..', 'src/routes'),
     '@/assets': path.resolve(__dirname, '..', 'src/assets'),
+    '@/libs': path.resolve(__dirname, '..', 'src/libs'),
   },
   sass:{
   data: `@import "taro-ui-vue3/dist/style/variables/default.scss";`,
