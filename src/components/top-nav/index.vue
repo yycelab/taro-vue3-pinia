@@ -1,7 +1,7 @@
 <template>
     <view>
-        <at-nav-bar id="nav-bar" :style="{ paddingTop: `${app.statusBarHeight}px`,zIndex:1100 }" @clickLeftIcon="handleGoback"
-            :leftIconType="leftIcon" color='#000' :title="title" :leftText='backTxt'>
+        <at-nav-bar id="nav-bar" :style="{ paddingTop: `${app.statusBarHeight}px`, zIndex: 1100 }"
+            @clickLeftIcon="handleGoback" :leftIconType="leftIcon" color='#000' :title="title" :leftText='backTxt'>
             <template v-if="custom">
                 <slot></slot>
             </template>
@@ -11,8 +11,9 @@
 </template>
 <script setup lang="ts">
 
+import { findElements } from "@/libs/taro-utils";
 import { useAppStore } from "@/stores/index"
-import Taro, { nextTick, createSelectorQuery } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router"
 // import {useRouter} from "vue-router"
@@ -52,17 +53,18 @@ async function handleGoback() {
     }
     app.routeTo({ path: backurl, extern: true, action: 'replace' })
 }
-onMounted(() => {
+onMounted(async () => {
     if (app.shouldInitMessageTop) {
-        console.log("should init message top spaces!")
-        nextTick(() => {
-            const query = createSelectorQuery()
-            query.select('#nav-bar').boundingClientRect((res) => {
-                if (res) {
-                    app.initMessageTop((res as any).height)
-                }
-            }).exec()
-        })
+        const results = await findElements('#nav-bar')
+        // console.log("should init message top spaces!")
+        // nextTick(() => {
+        //     const query = createSelectorQuery()
+        //     query.select('#nav-bar').boundingClientRect((res) => {
+        if (results.length > 0 && results[0]) {
+            app.initMessageTop(results[0].height)
+        }
+        //     }).exec()
+        // })
     }
 })
 

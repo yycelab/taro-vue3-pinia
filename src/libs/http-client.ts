@@ -14,6 +14,29 @@ const interceptResponse: AfterResponseHook<any, R> = ({ response }) => {
 }
 const config: HttpConfig = { base: '', headers: {}, afterResponse: interceptResponse }
 
+class HttpClient {
+
+    constructor(private readonly config: HttpConfig) { }
+
+    async get<P, RS extends R>(uri: string, params?: P): Promise<RS> {
+        return httpGet(this.config, uri, params)
+    }
+
+    async post<P, RS extends R>(uri: string, params?: P): Promise<RS> {
+        return httpPost(this.config, uri, params)
+    }
+
+    async json<P, RS extends R>(uri: string, params?: P): Promise<RS> {
+        return httpJson(this.config, uri, params)
+    }
+}
+
+export function useClient(init: (config: HttpConfig) => void) {
+    const cfg = { ...config }
+    init(cfg)
+    return new HttpClient(cfg)
+}
+
 export function customClient(init: (config: HttpConfig) => void) {
     config.afterResponse = interceptResponse
     init(config)

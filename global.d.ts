@@ -59,6 +59,25 @@ declare module '@tarojs/taro' {
   interface TaroStatic {
     atMessage(options: MessageOptions): void
   }
+
+ interface BoundingClientRectCallbackResult {
+    /** 节点的下边界坐标 */
+    bottom: number
+    /** 节点的 dataset */
+    dataset: TaroGeneral.IAnyObject
+    /** 节点的高度 */
+    height: number
+    /** 节点的 ID */
+    id: string
+    /** 节点的左边界坐标 */
+    left: number
+    /** 节点的右边界坐标 */
+    right: number
+    /** 节点的上边界坐标 */
+    top: number
+    /** 节点的宽度 */
+    width: number
+  }
 }
 
 
